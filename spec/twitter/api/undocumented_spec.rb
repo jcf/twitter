@@ -1,9 +1,9 @@
 require 'helper'
 
-describe Twitter::API::Undocumented do
+describe Nunemaker::Twitter::API::Undocumented do
 
   before do
-    @client = Twitter::Client.new
+    @client = Nunemaker::Twitter::Client.new
   end
 
   describe "#following_followers_of" do
@@ -17,9 +17,9 @@ describe Twitter::API::Undocumented do
       end
       it "returns an array of numeric IDs for every user following the specified user" do
         following_followers_of = @client.following_followers_of("sferik")
-        expect(following_followers_of).to be_a Twitter::Cursor
+        expect(following_followers_of).to be_a Nunemaker::Twitter::Cursor
         expect(following_followers_of.users).to be_an Array
-        expect(following_followers_of.users.first).to be_a Twitter::User
+        expect(following_followers_of.users.first).to be_a Nunemaker::Twitter::User
       end
       context "with all" do
         before do
@@ -63,9 +63,9 @@ describe Twitter::API::Undocumented do
       end
       it "returns an array of numeric IDs for every user following the specified user" do
         following_followers_of = @client.following_followers_of
-        expect(following_followers_of).to be_a Twitter::Cursor
+        expect(following_followers_of).to be_a Nunemaker::Twitter::Cursor
         expect(following_followers_of.users).to be_an Array
-        expect(following_followers_of.users.first).to be_a Twitter::User
+        expect(following_followers_of.users.first).to be_a Nunemaker::Twitter::User
       end
       context "with all" do
         before do

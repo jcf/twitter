@@ -1,10 +1,10 @@
 require 'twitter/basic_user'
 require 'twitter/creatable'
 
-module Twitter
-  class User < Twitter::BasicUser
+module Nunemaker::Twitter
+  class User < Nunemaker::Twitter::BasicUser
     PROFILE_IMAGE_SUFFIX_REGEX = /_normal(\.gif|\.jpe?g|\.png)$/i
-    include Twitter::Creatable
+    include Nunemaker::Twitter::Creatable
     attr_reader :connections, :contributors_enabled, :default_profile,
       :default_profile_image, :description, :favourites_count,
       :follow_request_sent, :followers_count, :friends_count, :geo_enabled,
@@ -30,10 +30,10 @@ module Twitter
     alias update_count statuses_count
     alias updates_count statuses_count
 
-    # @return [Array<Twitter::Entity::Url>]
+    # @return [Array<Nunemaker::Twitter::Entity::Url>]
     def description_urls
       @description_urls ||= Array(@attrs[:entities][:description][:urls]).map do |entity|
-        Twitter::Entity::Url.new(entity)
+        Nunemaker::Twitter::Entity::Url.new(entity)
       end
     end
 
@@ -85,9 +85,9 @@ module Twitter
     end
     alias profile_image_url_https? profile_image_url?
 
-    # @return [Twitter::Tweet]
+    # @return [Nunemaker::Twitter::Tweet]
     def status
-      @status ||= new_without_self(Twitter::Tweet, :status, :user)
+      @status ||= new_without_self(Nunemaker::Twitter::Tweet, :status, :user)
     end
     alias tweet status
 

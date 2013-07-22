@@ -1,12 +1,12 @@
 require 'helper'
 
-describe Twitter::Error::ClientError do
+describe Nunemaker::Twitter::Error::ClientError do
 
   before do
-    @client = Twitter::Client.new
+    @client = Nunemaker::Twitter::Client.new
   end
 
-  Twitter::Error::ClientError.errors.each do |status, exception|
+  Nunemaker::Twitter::Error::ClientError.errors.each do |status, exception|
     [nil, "error", "errors"].each do |body|
       context "when HTTP status is #{status} and body is #{body.inspect}" do
         before do

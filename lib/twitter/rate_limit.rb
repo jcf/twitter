@@ -1,5 +1,5 @@
-module Twitter
-  class RateLimit < Twitter::Base
+module Nunemaker::Twitter
+  class RateLimit < Nunemaker::Twitter::Base
 
     # @return [Integer]
     def limit

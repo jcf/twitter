@@ -1,16 +1,16 @@
 require 'twitter/action/tweet'
 
-module Twitter
+module Nunemaker::Twitter
   module Action
-    class Favorite < Twitter::Action::Tweet
+    class Favorite < Nunemaker::Twitter::Action::Tweet
       attr_reader :target_objects
 
       # A collection containing the favorited tweet
       #
-      # @return [Array<Twitter::Tweet>]
+      # @return [Array<Nunemaker::Twitter::Tweet>]
       def targets
         @targets = Array(@attrs[:targets]).map do |tweet|
-          Twitter::Tweet.new(tweet)
+          Nunemaker::Twitter::Tweet.new(tweet)
         end
       end
 

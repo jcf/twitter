@@ -1,6 +1,6 @@
 require 'faraday'
 
-module Twitter
+module Nunemaker::Twitter
   module Request
     class MultipartWithFile < Faraday::Middleware
       CONTENT_TYPE = 'Content-Type'

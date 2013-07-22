@@ -1,15 +1,15 @@
 require 'twitter/error'
 
-module Twitter
+module Nunemaker::Twitter
   class Error
-    # Raised when Twitter returns a 5xx HTTP status code
-    class ServerError < Twitter::Error
+    # Raised when Nunemaker::Twitter returns a 5xx HTTP status code
+    class ServerError < Nunemaker::Twitter::Error
       MESSAGE = "Server Error"
 
       # Create a new error from an HTTP environment
       #
       # @param response [Hash]
-      # @return [Twitter::Error]
+      # @return [Nunemaker::Twitter::Error]
       def self.from_response(response={})
         new(nil, response[:response_headers])
       end
@@ -18,7 +18,7 @@ module Twitter
       #
       # @param message [String]
       # @param response_headers [Hash]
-      # @return [Twitter::Error::ServerError]
+      # @return [Nunemaker::Twitter::Error::ServerError]
       def initialize(message=nil, response_headers={})
         super((message || self.class.const_get(:MESSAGE)), response_headers)
       end

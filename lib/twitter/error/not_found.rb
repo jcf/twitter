@@ -1,9 +1,9 @@
 require 'twitter/error/client_error'
 
-module Twitter
+module Nunemaker::Twitter
   class Error
-    # Raised when Twitter returns the HTTP status code 404
-    class NotFound < Twitter::Error::ClientError
+    # Raised when Nunemaker::Twitter returns the HTTP status code 404
+    class NotFound < Nunemaker::Twitter::Error::ClientError
       HTTP_STATUS_CODE = 404
     end
   end

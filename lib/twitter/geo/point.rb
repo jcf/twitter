@@ -1,8 +1,8 @@
 require 'twitter/geo'
 
-module Twitter
+module Nunemaker::Twitter
   class Geo
-    class Point < Twitter::Geo
+    class Point < Nunemaker::Twitter::Geo
 
       # @return [Integer]
       def latitude

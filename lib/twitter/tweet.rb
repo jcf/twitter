@@ -2,10 +2,10 @@ require 'forwardable'
 require 'twitter/creatable'
 require 'twitter/identity'
 
-module Twitter
-  class Tweet < Twitter::Identity
+module Nunemaker::Twitter
+  class Tweet < Nunemaker::Twitter::Identity
     extend Forwardable
-    include Twitter::Creatable
+    include Nunemaker::Twitter::Creatable
     attr_reader :favorite_count, :favorited, :from_user_id, :from_user_name,
       :in_reply_to_screen_name, :in_reply_to_attrs_id, :in_reply_to_status_id,
       :in_reply_to_user_id, :lang, :retweet_count, :retweeted, :source, :text,
@@ -46,31 +46,31 @@ module Twitter
       end
     end
 
-    # @return [Twitter::Geo]
+    # @return [Nunemaker::Twitter::Geo]
     def geo
-      @geo ||= new_or_null_object(Twitter::GeoFactory, :geo)
+      @geo ||= new_or_null_object(Nunemaker::Twitter::GeoFactory, :geo)
     end
 
     # @note Must include entities in your request for this method to work
-    # @return [Array<Twitter::Entity::Hashtag>]
+    # @return [Array<Nunemaker::Twitter::Entity::Hashtag>]
     def hashtags
-      @hashtags ||= entities(Twitter::Entity::Hashtag, :hashtags)
+      @hashtags ||= entities(Nunemaker::Twitter::Entity::Hashtag, :hashtags)
     end
 
     # @note Must include entities in your request for this method to work
-    # @return [Array<Twitter::Media>]
+    # @return [Array<Nunemaker::Twitter::Media>]
     def media
-      @media ||= entities(Twitter::MediaFactory, :media)
+      @media ||= entities(Nunemaker::Twitter::MediaFactory, :media)
     end
 
-    # @return [Twitter::Metadata]
+    # @return [Nunemaker::Twitter::Metadata]
     def metadata
-      @metadata ||= new_or_null_object(Twitter::Metadata, :metadata)
+      @metadata ||= new_or_null_object(Nunemaker::Twitter::Metadata, :metadata)
     end
 
-    # @return [Twitter::Place]
+    # @return [Nunemaker::Twitter::Place]
     def place
-      @place ||= new_or_null_object(Twitter::Place, :place)
+      @place ||= new_or_null_object(Nunemaker::Twitter::Place, :place)
     end
 
     # @return [Boolean]
@@ -88,7 +88,7 @@ module Twitter
 
     # If this Tweet is a retweet, the original Tweet is available here.
     #
-    # @return [Twitter::Tweet]
+    # @return [Nunemaker::Twitter::Tweet]
     def retweeted_status
       @retweeted_status ||= new_or_null_object(self.class, :retweeted_status)
     end
@@ -96,26 +96,26 @@ module Twitter
     alias retweeted_tweet retweeted_status
 
     # @note Must include entities in your request for this method to work
-    # @return [Array<Twitter::Entity::Symbol>]
+    # @return [Array<Nunemaker::Twitter::Entity::Symbol>]
     def symbols
-      @symbols ||= entities(Twitter::Entity::Symbol, :symbols)
+      @symbols ||= entities(Nunemaker::Twitter::Entity::Symbol, :symbols)
     end
 
     # @note Must include entities in your request for this method to work
-    # @return [Array<Twitter::Entity::Url>]
+    # @return [Array<Nunemaker::Twitter::Entity::Url>]
     def urls
-      @urls ||= entities(Twitter::Entity::Url, :urls)
+      @urls ||= entities(Nunemaker::Twitter::Entity::Url, :urls)
     end
 
-    # @return [Twitter::User]
+    # @return [Nunemaker::Twitter::User]
     def user
-      @user ||= new_without_self(Twitter::User, :user, :status)
+      @user ||= new_without_self(Nunemaker::Twitter::User, :user, :status)
     end
 
     # @note Must include entities in your request for this method to work
-    # @return [Array<Twitter::Entity::UserMention>]
+    # @return [Array<Nunemaker::Twitter::Entity::UserMention>]
     def user_mentions
-      @user_mentions ||= entities(Twitter::Entity::UserMention, :user_mentions)
+      @user_mentions ||= entities(Nunemaker::Twitter::Entity::UserMention, :user_mentions)
     end
 
     def user?

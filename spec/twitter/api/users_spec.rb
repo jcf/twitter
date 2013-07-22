@@ -1,9 +1,9 @@
 require 'helper'
 
-describe Twitter::API::Users do
+describe Nunemaker::Twitter::API::Users do
 
   before do
-    @client = Twitter::Client.new
+    @client = Nunemaker::Twitter::Client.new
   end
 
   describe "#settings" do
@@ -17,7 +17,7 @@ describe Twitter::API::Users do
     end
     it "returns settings" do
       settings = @client.settings
-      expect(settings).to be_a Twitter::Settings
+      expect(settings).to be_a Nunemaker::Twitter::Settings
       expect(settings.language).to eq "en"
     end
     it "requests the correct resource on POST" do
@@ -26,7 +26,7 @@ describe Twitter::API::Users do
     end
     it "returns settings" do
       settings = @client.settings(:trend_location_woeid => "23424803")
-      expect(settings).to be_a Twitter::Settings
+      expect(settings).to be_a Nunemaker::Twitter::Settings
       expect(settings.language).to eq "en"
     end
   end
@@ -41,7 +41,7 @@ describe Twitter::API::Users do
     end
     it "returns the requesting user" do
       user = @client.verify_credentials
-      expect(user).to be_a Twitter::User
+      expect(user).to be_a Nunemaker::Twitter::User
       expect(user.id).to eq 7505382
     end
   end
@@ -56,7 +56,7 @@ describe Twitter::API::Users do
     end
     it "returns a user" do
       user = @client.update_delivery_device("sms")
-      expect(user).to be_a Twitter::User
+      expect(user).to be_a Nunemaker::Twitter::User
       expect(user.id).to eq 7505382
     end
   end
@@ -71,7 +71,7 @@ describe Twitter::API::Users do
     end
     it "returns a user" do
       user = @client.update_profile(:url => "http://github.com/sferik/")
-      expect(user).to be_a Twitter::User
+      expect(user).to be_a Nunemaker::Twitter::User
       expect(user.id).to eq 7505382
     end
   end
@@ -86,7 +86,7 @@ describe Twitter::API::Users do
     end
     it "returns a user" do
       user = @client.update_profile_background_image(fixture("we_concept_bg2.png"))
-      expect(user).to be_a Twitter::User
+      expect(user).to be_a Nunemaker::Twitter::User
       expect(user.id).to eq 7505382
     end
   end
@@ -101,7 +101,7 @@ describe Twitter::API::Users do
     end
     it "returns a user" do
       user = @client.update_profile_colors(:profile_background_color => "000000")
-      expect(user).to be_a Twitter::User
+      expect(user).to be_a Nunemaker::Twitter::User
       expect(user.id).to eq 7505382
     end
   end
@@ -116,7 +116,7 @@ describe Twitter::API::Users do
     end
     it "returns a user" do
       user = @client.update_profile_image(fixture("me.jpeg"))
-      expect(user).to be_a Twitter::User
+      expect(user).to be_a Nunemaker::Twitter::User
       expect(user.id).to eq 7505382
     end
   end
@@ -130,12 +130,12 @@ describe Twitter::API::Users do
         @client.suggestions("art-design")
         expect(a_get("/1.1/users/suggestions/art-design.json")).to have_been_made
       end
-      it "returns the users in a given category of the Twitter suggested user list" do
+      it "returns the users in a given category of the Nunemaker::Twitter suggested user list" do
         suggestion = @client.suggestions("art-design")
-        expect(suggestion).to be_a Twitter::Suggestion
+        expect(suggestion).to be_a Nunemaker::Twitter::Suggestion
         expect(suggestion.name).to eq "Art & Design"
         expect(suggestion.users).to be_an Array
-        expect(suggestion.users.first).to be_a Twitter::User
+        expect(suggestion.users.first).to be_a Nunemaker::Twitter::User
       end
     end
     context "without arguments passed" do
@@ -149,7 +149,7 @@ describe Twitter::API::Users do
       it "returns the list of suggested user categories" do
         suggestions = @client.suggestions
         expect(suggestions).to be_an Array
-        expect(suggestions.first).to be_a Twitter::Suggestion
+        expect(suggestions.first).to be_a Nunemaker::Twitter::Suggestion
         expect(suggestions.first.name).to eq "Art & Design"
       end
     end
@@ -163,10 +163,10 @@ describe Twitter::API::Users do
       @client.suggest_users("art-design")
       expect(a_get("/1.1/users/suggestions/art-design/members.json")).to have_been_made
     end
-    it "returns users in a given category of the Twitter suggested user list and return their most recent status if they are not a protected user" do
+    it "returns users in a given category of the Nunemaker::Twitter suggested user list and return their most recent status if they are not a protected user" do
       suggest_users = @client.suggest_users("art-design")
       expect(suggest_users).to be_an Array
-      expect(suggest_users.first).to be_a Twitter::User
+      expect(suggest_users.first).to be_a Nunemaker::Twitter::User
       expect(suggest_users.first.id).to eq 13
     end
   end
@@ -181,9 +181,9 @@ describe Twitter::API::Users do
     end
     it "returns an array of user objects that the authenticating user is blocking" do
       blocking = @client.blocking
-      expect(blocking).to be_a Twitter::Cursor
+      expect(blocking).to be_a Nunemaker::Twitter::Cursor
       expect(blocking.users).to be_an Array
-      expect(blocking.users.first).to be_a Twitter::User
+      expect(blocking.users.first).to be_a Nunemaker::Twitter::User
       expect(blocking.users.first.id).to eq 7505382
     end
     context "with all" do
@@ -208,7 +208,7 @@ describe Twitter::API::Users do
     end
     it "returns an array of numeric user IDs the authenticating user is blocking" do
       blocked_ids = @client.blocked_ids
-      expect(blocked_ids).to be_a Twitter::Cursor
+      expect(blocked_ids).to be_a Nunemaker::Twitter::Cursor
       expect(blocked_ids.ids).to be_an Array
       expect(blocked_ids.ids.first).to eq 14100886
     end
@@ -264,7 +264,7 @@ describe Twitter::API::Users do
         stub_get("/1.1/blocks/ids.json").with(:query => {:cursor => "1305102810874389703"}).to_return(:body => fixture("ids_list2.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "requests the correct resources" do
-        user = Twitter::User.new(:id => "7505382")
+        user = Nunemaker::Twitter::User.new(:id => "7505382")
         @client.block?(user)
         expect(a_get("/1.1/blocks/ids.json").with(:query => {:cursor => "-1"})).to have_been_made
         expect(a_get("/1.1/blocks/ids.json").with(:query => {:cursor => "1305102810874389703"})).to have_been_made
@@ -283,7 +283,7 @@ describe Twitter::API::Users do
     it "returns an array of blocked users" do
       users = @client.block("sferik")
       expect(users).to be_an Array
-      expect(users.first).to be_a Twitter::User
+      expect(users.first).to be_a Nunemaker::Twitter::User
       expect(users.first.id).to eq 7505382
     end
   end
@@ -299,7 +299,7 @@ describe Twitter::API::Users do
     it "returns an array of un-blocked users" do
       users = @client.unblock("sferik")
       expect(users).to be_an Array
-      expect(users.first).to be_a Twitter::User
+      expect(users.first).to be_a Nunemaker::Twitter::User
       expect(users.first.id).to eq 7505382
     end
   end
@@ -317,7 +317,7 @@ describe Twitter::API::Users do
         it "returns up to 100 users worth of extended information" do
           users = @client.users("sferik", "pengwynn")
           expect(users).to be_an Array
-          expect(users.first).to be_a Twitter::User
+          expect(users.first).to be_a Nunemaker::Twitter::User
           expect(users.first.id).to eq 7505382
         end
         context "with URI objects passed" do
@@ -367,8 +367,8 @@ describe Twitter::API::Users do
           stub_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "requests the correct resource" do
-          user1 = Twitter::User.new(:id => "7505382")
-          user2 = Twitter::User.new(:id => "14100886")
+          user1 = Nunemaker::Twitter::User.new(:id => "7505382")
+          user2 = Nunemaker::Twitter::User.new(:id => "14100886")
           @client.users(user1, user2)
           expect(a_post("/1.1/users/lookup.json").with(:body => {:user_id => "7505382,14100886"})).to have_been_made
         end
@@ -386,7 +386,7 @@ describe Twitter::API::Users do
         it "returns up to 100 users worth of extended information" do
           users = @client.users("sferik", "pengwynn", :method => :get)
           expect(users).to be_an Array
-          expect(users.first).to be_a Twitter::User
+          expect(users.first).to be_a Nunemaker::Twitter::User
           expect(users.first.id).to eq 7505382
         end
         context "with URI objects passed" do
@@ -436,8 +436,8 @@ describe Twitter::API::Users do
           stub_get("/1.1/users/lookup.json").with(:query => {:user_id => "7505382,14100886"}).to_return(:body => fixture("users.json"), :headers => {:content_type => "application/json; charset=utf-8"})
         end
         it "requests the correct resource" do
-          user1 = Twitter::User.new(:id => "7505382")
-          user2 = Twitter::User.new(:id => "14100886")
+          user1 = Nunemaker::Twitter::User.new(:id => "7505382")
+          user2 = Nunemaker::Twitter::User.new(:id => "14100886")
           @client.users(user1, user2, :method => :get)
           expect(a_get("/1.1/users/lookup.json").with(:query => {:user_id => "7505382,14100886"})).to have_been_made
         end
@@ -456,7 +456,7 @@ describe Twitter::API::Users do
       end
       it "returns extended information of a given user" do
         user = @client.user("sferik")
-        expect(user).to be_a Twitter::User
+        expect(user).to be_a Nunemaker::Twitter::User
         expect(user.id).to eq 7505382
       end
     end
@@ -492,7 +492,7 @@ describe Twitter::API::Users do
         stub_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"}).to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "requests the correct resource" do
-        user = Twitter::User.new(:id => 7505382)
+        user = Nunemaker::Twitter::User.new(:id => 7505382)
         @client.user(user)
         expect(a_get("/1.1/users/show.json").with(:query => {:user_id => "7505382"})).to have_been_made
       end
@@ -549,7 +549,7 @@ describe Twitter::API::Users do
     it "returns an array of user search results" do
       user_search = @client.user_search("Erik Michaels-Ober")
       expect(user_search).to be_an Array
-      expect(user_search.first).to be_a Twitter::User
+      expect(user_search.first).to be_a Nunemaker::Twitter::User
       expect(user_search.first.id).to eq 7505382
     end
   end
@@ -566,8 +566,8 @@ describe Twitter::API::Users do
       it "returns a user's contributees" do
         contributees = @client.contributees("sferik")
         expect(contributees).to be_an Array
-        expect(contributees.first).to be_a Twitter::User
-        expect(contributees.first.name).to eq "Twitter API"
+        expect(contributees.first).to be_a Nunemaker::Twitter::User
+        expect(contributees.first.name).to eq "Nunemaker::Twitter API"
       end
     end
     context "with a user ID passed" do
@@ -591,8 +591,8 @@ describe Twitter::API::Users do
       it "returns a user's contributees" do
         contributees = @client.contributees
         expect(contributees).to be_an Array
-        expect(contributees.first).to be_a Twitter::User
-        expect(contributees.first.name).to eq "Twitter API"
+        expect(contributees.first).to be_a Nunemaker::Twitter::User
+        expect(contributees.first.name).to eq "Nunemaker::Twitter API"
       end
     end
   end
@@ -609,7 +609,7 @@ describe Twitter::API::Users do
       it "returns a user's contributors" do
         contributors = @client.contributors("sferik")
         expect(contributors).to be_an Array
-        expect(contributors.first).to be_a Twitter::User
+        expect(contributors.first).to be_a Nunemaker::Twitter::User
         expect(contributors.first.id).to eq 13
       end
     end
@@ -634,7 +634,7 @@ describe Twitter::API::Users do
       it "returns a user's contributors" do
         contributors = @client.contributors
         expect(contributors).to be_an Array
-        expect(contributors.first).to be_a Twitter::User
+        expect(contributors.first).to be_a Nunemaker::Twitter::User
         expect(contributors.first.id).to eq 13
       end
     end
@@ -679,7 +679,7 @@ describe Twitter::API::Users do
       end
       it "returns a user's profile banner" do
         banner = @client.profile_banner("sferik")
-        expect(banner).to be_a Twitter::ProfileBanner
+        expect(banner).to be_a Nunemaker::Twitter::ProfileBanner
         expect(banner.sizes).to be_a Hash
         expect(banner.sizes[:mobile].height).to eq 160
       end
@@ -705,7 +705,7 @@ describe Twitter::API::Users do
       end
       it "returns an array of numeric IDs for every user following the specified user" do
         banner = @client.profile_banner
-        expect(banner).to be_a Twitter::ProfileBanner
+        expect(banner).to be_a Nunemaker::Twitter::ProfileBanner
         expect(banner.sizes).to be_a Hash
         expect(banner.sizes[:mobile].height).to eq 160
       end

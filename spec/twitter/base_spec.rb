@@ -1,8 +1,8 @@
 require 'helper'
 
-describe Twitter::Base do
+describe Nunemaker::Twitter::Base do
   before do
-    @base = Twitter::Base.new(:id => 1)
+    @base = Nunemaker::Twitter::Base.new(:id => 1)
   end
 
   describe "#[]" do
@@ -26,7 +26,7 @@ describe Twitter::Base do
 
   describe "#delete" do
     it "deletes an attribute and returns its value" do
-      base = Twitter::Base.new(:id => 1)
+      base = Nunemaker::Twitter::Base.new(:id => 1)
       expect(base.delete(:id)).to eq(1)
       expect(base.attrs[:id]).to be_nil
     end
@@ -34,7 +34,7 @@ describe Twitter::Base do
 
   describe "#update" do
     it "returns a hash of attributes" do
-      base = Twitter::Base.new(:id => 1)
+      base = Nunemaker::Twitter::Base.new(:id => 1)
       base.update(:id => 2)
       expect(base.attrs[:id]).to eq(2)
     end

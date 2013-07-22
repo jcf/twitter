@@ -6,16 +6,16 @@ require 'twitter/action/reply'
 require 'twitter/action/retweet'
 require 'twitter/factory'
 
-module Twitter
-  class ActionFactory < Twitter::Factory
+module Nunemaker::Twitter
+  class ActionFactory < Nunemaker::Twitter::Factory
 
     # Construct a new action object
     #
     # @param attrs [Hash]
     # @raise [ArgumentError] Error raised when supplied argument is missing an :action key.
-    # @return [Twitter::Action]
+    # @return [Nunemaker::Twitter::Action]
     def self.new(attrs={})
-      super(:action, Twitter::Action, attrs)
+      super(:action, Nunemaker::Twitter::Action, attrs)
     end
 
   end

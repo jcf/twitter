@@ -1,8 +1,8 @@
 require 'twitter/geo'
 
-module Twitter
+module Nunemaker::Twitter
   class Geo
-    class Polygon < Twitter::Geo
+    class Polygon < Nunemaker::Twitter::Geo
     end
   end
 end

@@ -1,9 +1,9 @@
 require 'helper'
 
-describe Twitter::API::PlacesAndGeo do
+describe Nunemaker::Twitter::API::PlacesAndGeo do
 
   before do
-    @client = Twitter::Client.new
+    @client = Nunemaker::Twitter::Client.new
   end
 
   describe "#place" do
@@ -16,7 +16,7 @@ describe Twitter::API::PlacesAndGeo do
     end
     it "returns a place" do
       place = @client.place("247f43d441defc03")
-      expect(place.name).to eq "Twitter HQ"
+      expect(place.name).to eq "Nunemaker::Twitter HQ"
     end
   end
 
@@ -52,14 +52,14 @@ describe Twitter::API::PlacesAndGeo do
 
   describe "#similar_places" do
     before do
-      stub_get("/1.1/geo/similar_places.json").with(:query => {:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Twitter HQ"}).to_return(:body => fixture("places.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      stub_get("/1.1/geo/similar_places.json").with(:query => {:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Nunemaker::Twitter HQ"}).to_return(:body => fixture("places.json"), :headers => {:content_type => "application/json; charset=utf-8"})
     end
     it "requests the correct resource" do
-      @client.similar_places(:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Twitter HQ")
-      expect(a_get("/1.1/geo/similar_places.json").with(:query => {:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Twitter HQ"})).to have_been_made
+      @client.similar_places(:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Nunemaker::Twitter HQ")
+      expect(a_get("/1.1/geo/similar_places.json").with(:query => {:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Nunemaker::Twitter HQ"})).to have_been_made
     end
     it "returns similar places" do
-      places = @client.similar_places(:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Twitter HQ")
+      places = @client.similar_places(:lat => "37.7821120598956", :long => "-122.400612831116", :name => "Nunemaker::Twitter HQ")
       expect(places).to be_an Array
       expect(places.first.name).to eq "Bernal Heights"
     end
@@ -75,7 +75,7 @@ describe Twitter::API::PlacesAndGeo do
     end
     it "returns a place" do
       place = @client.place_create(:name => "@sferik's Apartment", :token => "22ff5b1f7159032cf69218c4d8bb78bc", :contained_within => "41bcb736f84a799e", :lat => "37.783699", :long => "-122.393581")
-      expect(place.name).to eq "Twitter HQ"
+      expect(place.name).to eq "Nunemaker::Twitter HQ"
     end
   end
 

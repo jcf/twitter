@@ -1,28 +1,28 @@
 require 'helper'
 
-describe Twitter::Client do
+describe Nunemaker::Twitter::Client do
 
   subject do
-    Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT", :oauth_token_secret => "OS")
+    Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT", :oauth_token_secret => "OS")
   end
 
   context "with module configuration" do
 
     before do
-      Twitter.configure do |config|
-        Twitter::Configurable.keys.each do |key|
+      Nunemaker::Twitter.configure do |config|
+        Nunemaker::Twitter::Configurable.keys.each do |key|
           config.send("#{key}=", key)
         end
       end
     end
 
     after do
-      Twitter.reset!
+      Nunemaker::Twitter.reset!
     end
 
     it "inherits the module configuration" do
-      client = Twitter::Client.new
-      Twitter::Configurable.keys.each do |key|
+      client = Nunemaker::Twitter::Client.new
+      Nunemaker::Twitter::Configurable.keys.each do |key|
         expect(client.instance_variable_get(:"@#{key}")).to eq key
       end
     end
@@ -44,8 +44,8 @@ describe Twitter::Client do
 
       context "during initialization" do
         it "overrides the module configuration" do
-          client = Twitter::Client.new(@configuration)
-          Twitter::Configurable.keys.each do |key|
+          client = Nunemaker::Twitter::Client.new(@configuration)
+          Nunemaker::Twitter::Configurable.keys.each do |key|
             expect(client.instance_variable_get(:"@#{key}")).to eq @configuration[key]
           end
         end
@@ -53,13 +53,13 @@ describe Twitter::Client do
 
       context "after initialization" do
         it "overrides the module configuration after initialization" do
-          client = Twitter::Client.new
+          client = Nunemaker::Twitter::Client.new
           client.configure do |config|
             @configuration.each do |key, value|
               config.send("#{key}=", value)
             end
           end
-          Twitter::Configurable.keys.each do |key|
+          Nunemaker::Twitter::Configurable.keys.each do |key|
             expect(client.instance_variable_get(:"@#{key}")).to eq @configuration[key]
           end
         end
@@ -70,10 +70,10 @@ describe Twitter::Client do
 
   it "does not cache the screen name across clients" do
     stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    client1 = Twitter::Client.new
+    client1 = Nunemaker::Twitter::Client.new
     expect(client1.verify_credentials.id).to eq 7505382
     stub_get("/1.1/account/verify_credentials.json").to_return(:body => fixture("pengwynn.json"), :headers => {:content_type => "application/json; charset=utf-8"})
-    client2 = Twitter::Client.new
+    client2 = Nunemaker::Twitter::Client.new
     expect(client2.verify_credentials.id).to eq 14100886
   end
 
@@ -99,33 +99,33 @@ describe Twitter::Client do
 
   describe "#user_token?" do
     it "returns true if the user token/secret are present" do
-      client = Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT", :oauth_token_secret => "OS")
+      client = Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT", :oauth_token_secret => "OS")
       expect(client.user_token?).to be_true
     end
     it "returns false if the user token/secret are not completely present" do
-      client = Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT")
+      client = Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT")
       expect(client.user_token?).to be_false
     end
   end
 
   describe "#bearer_token?" do
     it "returns true if the app token is present" do
-      client = Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :bearer_token => "BT")
+      client = Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :bearer_token => "BT")
       expect(client.bearer_token?).to be_true
     end
     it "returns false if the bearer_token is not present" do
-      client = Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS")
+      client = Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS")
       expect(client.bearer_token?).to be_false
     end
   end
 
   describe "#credentials?" do
     it "returns true if all credentials are present" do
-      client = Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT", :oauth_token_secret => "OS")
+      client = Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT", :oauth_token_secret => "OS")
       expect(client.credentials?).to be_true
     end
     it "returns false if any credentials are missing" do
-      client = Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT")
+      client = Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS", :oauth_token => "OT")
       expect(client.credentials?).to be_false
     end
   end
@@ -153,11 +153,11 @@ describe Twitter::Client do
     end
     it "catches Faraday errors" do
       allow(subject).to receive(:connection).and_raise(Faraday::Error::ClientError.new("Oops"))
-      expect{subject.send(:request, :get, "/path")}.to raise_error Twitter::Error::ClientError
+      expect{subject.send(:request, :get, "/path")}.to raise_error Nunemaker::Twitter::Error::ClientError
     end
     it "catches JSON::ParserError errors" do
       allow(subject).to receive(:connection).and_raise(JSON::ParserError.new("unexpected token"))
-      expect{subject.send(:request, :get, "/path")}.to raise_error Twitter::Error::ParserError
+      expect{subject.send(:request, :get, "/path")}.to raise_error Nunemaker::Twitter::Error::ParserError
     end
   end
 
@@ -202,7 +202,7 @@ describe Twitter::Client do
 
   describe "#bearer_auth_header" do
     subject do
-      Twitter::Client.new(:bearer_token => "BT")
+      Nunemaker::Twitter::Client.new(:bearer_token => "BT")
     end
 
     it "creates the correct auth headers with supplied bearer_token" do

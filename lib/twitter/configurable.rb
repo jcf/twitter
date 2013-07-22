@@ -2,7 +2,7 @@ require 'forwardable'
 require 'twitter/default'
 require 'twitter/error/configuration_error'
 
-module Twitter
+module Nunemaker::Twitter
   module Configurable
     extend Forwardable
     attr_writer :consumer_secret, :oauth_token, :oauth_token_secret, :bearer_token
@@ -28,7 +28,7 @@ module Twitter
 
     # Convenience method to allow configuration options to be set in a block
     #
-    # @raise [Twitter::Error::ConfigurationError] Error is raised when supplied
+    # @raise [Nunemaker::Twitter::Error::ConfigurationError] Error is raised when supplied
     #   twitter credentials are not a String or Symbol.
     def configure
       yield self
@@ -37,8 +37,8 @@ module Twitter
     end
 
     def reset!
-      Twitter::Configurable.keys.each do |key|
-        instance_variable_set(:"@#{key}", Twitter::Default.options[key])
+      Nunemaker::Twitter::Configurable.keys.each do |key|
+        instance_variable_set(:"@#{key}", Nunemaker::Twitter::Default.options[key])
       end
       self
     end
@@ -73,13 +73,13 @@ module Twitter
 
     # @return [Hash]
     def options
-      Hash[Twitter::Configurable.keys.map{|key| [key, instance_variable_get(:"@#{key}")]}]
+      Hash[Nunemaker::Twitter::Configurable.keys.map{|key| [key, instance_variable_get(:"@#{key}")]}]
     end
 
     # Ensures that all credentials set during configuration are of a
     # valid type. Valid types are String and Symbol.
     #
-    # @raise [Twitter::Error::ConfigurationError] Error is raised when
+    # @raise [Nunemaker::Twitter::Error::ConfigurationError] Error is raised when
     #   supplied twitter credentials are not a String or Symbol.
     def validate_credential_type!
       credentials.each do |credential, value|

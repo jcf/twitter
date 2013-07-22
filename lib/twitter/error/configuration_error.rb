@@ -1,6 +1,6 @@
 require 'twitter/error'
 
-module Twitter
+module Nunemaker::Twitter
   class Error
     class ConfigurationError < ::ArgumentError
     end

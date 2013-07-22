@@ -1,9 +1,9 @@
 require 'time'
 
-module Twitter
+module Nunemaker::Twitter
   module Creatable
 
-    # Time when the object was created on Twitter
+    # Time when the object was created on Nunemaker::Twitter
     #
     # @return [Time]
     def created_at

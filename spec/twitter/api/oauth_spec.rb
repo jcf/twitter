@@ -1,9 +1,9 @@
 require 'helper'
 
-describe Twitter::API::OAuth do
+describe Nunemaker::Twitter::API::OAuth do
 
   before do
-    @client = Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS")
+    @client = Nunemaker::Twitter::Client.new(:consumer_key => "CK", :consumer_secret => "CS")
   end
 
   describe "#token" do
@@ -46,7 +46,7 @@ describe Twitter::API::OAuth do
     end
     context "with a token" do
       it "requests the correct resource" do
-        token = Twitter::Token.new(:access_token => "AAAA%2FAAA%3DAAAAAAAA")
+        token = Nunemaker::Twitter::Token.new(:access_token => "AAAA%2FAAA%3DAAAAAAAA")
         @client.invalidate_token(token)
         expect(a_post("/oauth2/invalidate_token").with(:body => {:access_token => "AAAA%2FAAA%3DAAAAAAAA"})).to have_been_made
       end

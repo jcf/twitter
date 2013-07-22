@@ -1,4 +1,4 @@
-module Twitter
+module Nunemaker::Twitter
   module API
     class Arguments < Array
       attr_reader :options

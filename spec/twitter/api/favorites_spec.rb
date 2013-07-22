@@ -1,9 +1,9 @@
 require 'helper'
 
-describe Twitter::API::Favorites do
+describe Nunemaker::Twitter::API::Favorites do
 
   before do
-    @client = Twitter::Client.new
+    @client = Nunemaker::Twitter::Client.new
   end
 
   describe "#favorites" do
@@ -18,7 +18,7 @@ describe Twitter::API::Favorites do
       it "returns the 20 most recent favorite Tweets for the authenticating user or user specified by the ID parameter" do
         favorites = @client.favorites("sferik")
         expect(favorites).to be_an Array
-        expect(favorites.first).to be_a Twitter::Tweet
+        expect(favorites.first).to be_a Nunemaker::Twitter::Tweet
         expect(favorites.first.user.id).to eq 7505382
       end
       context "with a URI object passed" do
@@ -46,7 +46,7 @@ describe Twitter::API::Favorites do
       it "returns the 20 most recent favorite Tweets for the authenticating user or user specified by the ID parameter" do
         favorites = @client.favorites
         expect(favorites).to be_an Array
-        expect(favorites.first).to be_a Twitter::Tweet
+        expect(favorites.first).to be_a Nunemaker::Twitter::Tweet
         expect(favorites.first.user.id).to eq 7505382
       end
     end
@@ -63,7 +63,7 @@ describe Twitter::API::Favorites do
     it "returns an array of un-favorited Tweets" do
       tweets = @client.unfavorite(25938088801)
       expect(tweets).to be_an Array
-      expect(tweets.first).to be_a Twitter::Tweet
+      expect(tweets.first).to be_a Nunemaker::Twitter::Tweet
       expect(tweets.first.text).to eq "The problem with your code is that it's doing exactly what you told it to do."
     end
     context "with a URI object passed" do
@@ -81,7 +81,7 @@ describe Twitter::API::Favorites do
     end
     context "with a Tweet passed" do
       it "requests the correct resource" do
-        tweet = Twitter::Tweet.new(:id => 25938088801)
+        tweet = Nunemaker::Twitter::Tweet.new(:id => 25938088801)
         @client.unfavorite(tweet)
         expect(a_post("/1.1/favorites/destroy.json").with(:body => {:id => "25938088801"})).to have_been_made
       end
@@ -99,7 +99,7 @@ describe Twitter::API::Favorites do
     it "returns an array of favorited Tweets" do
       tweets = @client.favorite(25938088801)
       expect(tweets).to be_an Array
-      expect(tweets.first).to be_a Twitter::Tweet
+      expect(tweets.first).to be_a Nunemaker::Twitter::Tweet
       expect(tweets.first.text).to eq "The problem with your code is that it's doing exactly what you told it to do."
     end
     context "already favorited" do
@@ -125,7 +125,7 @@ describe Twitter::API::Favorites do
     end
     context "with a Tweet passed" do
       it "requests the correct resource" do
-        tweet = Twitter::Tweet.new(:id => 25938088801)
+        tweet = Nunemaker::Twitter::Tweet.new(:id => 25938088801)
         @client.favorite(tweet)
         expect(a_post("/1.1/favorites/create.json").with(:body => {:id => "25938088801"})).to have_been_made
       end
@@ -143,7 +143,7 @@ describe Twitter::API::Favorites do
     it "returns an array of favorited Tweets" do
       tweets = @client.favorite!(25938088801)
       expect(tweets).to be_an Array
-      expect(tweets.first).to be_a Twitter::Tweet
+      expect(tweets.first).to be_a Nunemaker::Twitter::Tweet
       expect(tweets.first.text).to eq "The problem with your code is that it's doing exactly what you told it to do."
     end
     context "forbidden" do
@@ -151,7 +151,7 @@ describe Twitter::API::Favorites do
         stub_post("/1.1/favorites/create.json").with(:body => {:id => "25938088801"}).to_return(:status => 403, :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "raises a Forbidden error" do
-        expect{@client.favorite!(25938088801)}.to raise_error Twitter::Error::Forbidden
+        expect{@client.favorite!(25938088801)}.to raise_error Nunemaker::Twitter::Error::Forbidden
       end
     end
     context "already favorited" do
@@ -159,7 +159,7 @@ describe Twitter::API::Favorites do
         stub_post("/1.1/favorites/create.json").with(:body => {:id => "25938088801"}).to_return(:status => 403, :body => fixture("already_favorited.json"), :headers => {:content_type => "application/json; charset=utf-8"})
       end
       it "raises an AlreadyFavorited error" do
-        expect{@client.favorite!(25938088801)}.to raise_error Twitter::Error::AlreadyFavorited
+        expect{@client.favorite!(25938088801)}.to raise_error Nunemaker::Twitter::Error::AlreadyFavorited
       end
     end
     context "with a URI object passed" do
@@ -177,7 +177,7 @@ describe Twitter::API::Favorites do
     end
     context "with a Tweet passed" do
       it "requests the correct resource" do
-        tweet = Twitter::Tweet.new(:id => 25938088801)
+        tweet = Nunemaker::Twitter::Tweet.new(:id => 25938088801)
         @client.favorite!(tweet)
         expect(a_post("/1.1/favorites/create.json").with(:body => {:id => "25938088801"})).to have_been_made
       end

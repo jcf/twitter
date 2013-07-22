@@ -5,37 +5,37 @@ require 'twitter/cursor'
 require 'twitter/tweet'
 require 'twitter/user'
 
-module Twitter
+module Nunemaker::Twitter
   module API
     module Undocumented
-      include Twitter::API::Utils
+      include Nunemaker::Twitter::API::Utils
 
       # @note Undocumented
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
       #
       # @overload following_followers_of(options={})
       #   Returns users following followers of the specified user
       #
       #   @param options [Hash] A customizable set of options.
       #     @option options [Integer] :cursor (-1) Breaks the results into pages. Provide values as returned in the response objects's next_cursor and previous_cursor attributes to page back and forth in the list.
-      #     @return [Twitter::Cursor]
+      #     @return [Nunemaker::Twitter::Cursor]
       #   @example Return users follow followers of @sferik
-      #     Twitter.following_followers_of
+      #     Nunemaker::Twitter.following_followers_of
       #
       # @overload following_followers_of(user, options={})
       #   Returns users following followers of the authenticated user
       #
-      #   @param user [Integer, String, Twitter::User] A Twitter user ID, screen name, URI, or object.
+      #   @param user [Integer, String, Nunemaker::Twitter::User] A Nunemaker::Twitter user ID, screen name, URI, or object.
       #   @param options [Hash] A customizable set of options.
       #     @option options [Integer] :cursor (-1) Breaks the results into pages. Provide values as returned in the response objects's next_cursor and previous_cursor attributes to page back and forth in the list.
-      #     @return [Twitter::Cursor]
+      #     @return [Nunemaker::Twitter::Cursor]
       #   @example Return users follow followers of @sferik
-      #     Twitter.following_followers_of('sferik')
-      #     Twitter.following_followers_of(7505382)  # Same as above
+      #     Nunemaker::Twitter.following_followers_of('sferik')
+      #     Nunemaker::Twitter.following_followers_of(7505382)  # Same as above
       def following_followers_of(*args)
-        cursor_from_response_with_user(:users, Twitter::User, :get, "/users/following_followers_of.json", args, :following_followers_of)
+        cursor_from_response_with_user(:users, Nunemaker::Twitter::User, :get, "/users/following_followers_of.json", args, :following_followers_of)
       end
 
       # Returns Tweets count for a URL
@@ -47,7 +47,7 @@ module Twitter
       # @param url [Integer] A URL.
       # @param options [Hash] A customizable set of options.
       # @example Return Tweet count for http://twitter.com
-      #   Twitter.tweet_count("http://twitter.com/")
+      #   Nunemaker::Twitter.tweet_count("http://twitter.com/")
       def tweet_count(url, options={})
         connection = Faraday.new("https://cdn.api.twitter.com", @connection_options.merge(:builder => @middleware))
         connection.get("/1/urls/count.json", options.merge(:url => url)).body[:count]

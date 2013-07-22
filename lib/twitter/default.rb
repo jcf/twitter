@@ -8,41 +8,41 @@ require 'twitter/response/parse_json'
 require 'twitter/response/raise_error'
 require 'twitter/version'
 
-module Twitter
+module Nunemaker::Twitter
   module Default
-    ENDPOINT = 'https://api.twitter.com' unless defined? Twitter::Default::ENDPOINT
+    ENDPOINT = 'https://api.twitter.com' unless defined? Nunemaker::Twitter::Default::ENDPOINT
     CONNECTION_OPTIONS = {
       :headers => {
         :accept => 'application/json',
-        :user_agent => "Twitter Ruby Gem #{Twitter::Version}",
+        :user_agent => "Nunemaker::Twitter Ruby Gem #{Nunemaker::Twitter::Version}",
       },
       :request => {
         :open_timeout => 5,
         :timeout => 10,
       },
-    } unless defined? Twitter::Default::CONNECTION_OPTIONS
+    } unless defined? Nunemaker::Twitter::Default::CONNECTION_OPTIONS
     MIDDLEWARE = Faraday::Builder.new do |builder|
       # Convert file uploads to Faraday::UploadIO objects
-      builder.use Twitter::Request::MultipartWithFile
+      builder.use Nunemaker::Twitter::Request::MultipartWithFile
       # Checks for files in the payload
       builder.use Faraday::Request::Multipart
       # Convert request params to "www-form-urlencoded"
       builder.use Faraday::Request::UrlEncoded
       # Handle 4xx server responses
-      builder.use Twitter::Response::RaiseError, Twitter::Error::ClientError
+      builder.use Nunemaker::Twitter::Response::RaiseError, Nunemaker::Twitter::Error::ClientError
       # Parse JSON response bodies
-      builder.use Twitter::Response::ParseJson
+      builder.use Nunemaker::Twitter::Response::ParseJson
       # Handle 5xx server responses
-      builder.use Twitter::Response::RaiseError, Twitter::Error::ServerError
+      builder.use Nunemaker::Twitter::Response::RaiseError, Nunemaker::Twitter::Error::ServerError
       # Set Faraday's HTTP adapter
       builder.adapter Faraday.default_adapter
-    end unless defined? Twitter::Default::MIDDLEWARE
+    end unless defined? Nunemaker::Twitter::Default::MIDDLEWARE
 
     class << self
 
       # @return [Hash]
       def options
-        Hash[Twitter::Configurable.keys.map{|key| [key, send(key)]}]
+        Hash[Nunemaker::Twitter::Configurable.keys.map{|key| [key, send(key)]}]
       end
 
       # @return [String]
@@ -70,8 +70,8 @@ module Twitter
         ENV['TWITTER_BEARER_TOKEN']
       end
 
-      # @note This is configurable in case you want to use a Twitter-compatible endpoint.
-      # @see http://status.net/wiki/Twitter-compatible_API
+      # @note This is configurable in case you want to use a Nunemaker::Twitter-compatible endpoint.
+      # @see http://status.net/wiki/Nunemaker::Twitter-compatible_API
       # @see http://en.blog.wordpress.com/2009/12/12/twitter-api/
       # @see http://staff.tumblr.com/post/287703110/api
       # @see http://developer.typepad.com/typepad-twitter-api/twitter-api.html

@@ -1,7 +1,7 @@
 require 'twitter/rate_limit'
 
-module Twitter
-  # Custom error class for rescuing from all Twitter errors
+module Nunemaker::Twitter
+  # Custom error class for rescuing from all Nunemaker::Twitter errors
   class Error < StandardError
     attr_reader :rate_limit, :wrapped_exception
 
@@ -19,9 +19,9 @@ module Twitter
     #
     # @param exception [Exception, String]
     # @param response_headers [Hash]
-    # @return [Twitter::Error]
+    # @return [Nunemaker::Twitter::Error]
     def initialize(exception=$!, response_headers={})
-      @rate_limit = Twitter::RateLimit.new(response_headers)
+      @rate_limit = Nunemaker::Twitter::RateLimit.new(response_headers)
       @wrapped_exception = exception
       exception.respond_to?(:backtrace) ? super(exception.message) : super(exception.to_s)
     end

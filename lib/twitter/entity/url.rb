@@ -1,8 +1,8 @@
 require 'twitter/entity'
 
-module Twitter
+module Nunemaker::Twitter
   class Entity
-    class Url < Twitter::Entity
+    class Url < Nunemaker::Twitter::Entity
       attr_reader :display_url, :expanded_url, :url
     end
   end

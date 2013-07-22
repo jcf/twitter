@@ -1,12 +1,12 @@
 require 'twitter/base'
 
-module Twitter
-  class SearchResults < Twitter::Base
+module Nunemaker::Twitter
+  class SearchResults < Nunemaker::Twitter::Base
 
-    # @return [Array<Twitter::Tweet>]
+    # @return [Array<Nunemaker::Twitter::Tweet>]
     def statuses
       @results ||= Array(@attrs[:statuses]).map do |tweet|
-        Twitter::Tweet.new(tweet)
+        Nunemaker::Twitter::Tweet.new(tweet)
       end
     end
     alias collection statuses

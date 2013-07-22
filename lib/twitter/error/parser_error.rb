@@ -1,9 +1,9 @@
 require 'twitter/error'
 
-module Twitter
+module Nunemaker::Twitter
   class Error
     # Raised when JSON parsing fails
-    class ParserError < Twitter::Error
+    class ParserError < Nunemaker::Twitter::Error
     end
   end
 end

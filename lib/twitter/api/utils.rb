@@ -3,7 +3,7 @@ require 'twitter/cursor'
 require 'twitter/user'
 require 'uri'
 
-module Twitter
+module Nunemaker::Twitter
   module API
     module Utils
 
@@ -12,9 +12,9 @@ module Twitter
 
     private
 
-      # Take a URI string or Twitter::Identity object and return its ID
+      # Take a URI string or Nunemaker::Twitter::Identity object and return its ID
       #
-      # @param object [Integer, String, URI, Twitter::Identity] An ID, URI, or object.
+      # @param object [Integer, String, URI, Nunemaker::Twitter::Identity] An ID, URI, or object.
       # @return [Integer]
       def extract_id(object)
         case object
@@ -24,7 +24,7 @@ module Twitter
           object.split("/").last.to_i
         when URI
           object.path.split("/").last.to_i
-        when Twitter::Identity
+        when Nunemaker::Twitter::Identity
           object.id
         end
       end
@@ -32,22 +32,22 @@ module Twitter
       # @param request_method [Symbol]
       # @param path [String]
       # @param args [Array]
-      # @return [Array<Twitter::User>]
+      # @return [Array<Nunemaker::Twitter::User>]
       def threaded_user_objects_from_response(request_method, path, args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         arguments.flatten.threaded_map do |user|
-          object_from_response(Twitter::User, request_method, path, merge_user(arguments.options, user))
+          object_from_response(Nunemaker::Twitter::User, request_method, path, merge_user(arguments.options, user))
         end
       end
 
       # @param request_method [Symbol]
       # @param path [String]
       # @param args [Array]
-      # @return [Array<Twitter::User>]
+      # @return [Array<Nunemaker::Twitter::User>]
       def user_objects_from_response(request_method, path, args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         merge_user!(arguments.options, arguments.pop || screen_name) unless arguments.options[:user_id] || arguments.options[:screen_name]
-        objects_from_response(Twitter::User, request_method, path, arguments.options)
+        objects_from_response(Nunemaker::Twitter::User, request_method, path, arguments.options)
       end
 
       # @param klass [Class]
@@ -56,7 +56,7 @@ module Twitter
       # @param args [Array]
       # @return [Array]
       def objects_from_response_with_user(klass, request_method, path, args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         merge_user!(arguments.options, arguments.pop)
         objects_from_response(klass, request_method, path, arguments.options)
       end
@@ -86,7 +86,7 @@ module Twitter
       # @param args [Array]
       # @return [Array]
       def threaded_object_from_response(klass, request_method, path, args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         arguments.flatten.threaded_map do |object|
           id = extract_id(object)
           object_from_response(klass, request_method, path, arguments.options.merge(:id => id))
@@ -109,9 +109,9 @@ module Twitter
       # @param path [String]
       # @param args [Array]
       # @param method_name [Symbol]
-      # @return [Twitter::Cursor]
+      # @return [Nunemaker::Twitter::Cursor]
       def cursor_from_response_with_user(collection_name, klass, request_method, path, args, method_name)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         merge_user!(arguments.options, arguments.pop || screen_name) unless arguments.options[:user_id] || arguments.options[:screen_name]
         cursor_from_response(collection_name, klass, request_method, path, arguments.options, method_name)
       end
@@ -122,11 +122,11 @@ module Twitter
       # @param path [String]
       # @param options [Hash]
       # @param method_name [Symbol]
-      # @return [Twitter::Cursor]
+      # @return [Nunemaker::Twitter::Cursor]
       def cursor_from_response(collection_name, klass, request_method, path, options, method_name)
         merge_default_cursor!(options)
         response = send(request_method.to_sym, path, options)
-        Twitter::Cursor.from_response(response, collection_name.to_sym, klass, self, method_name, options)
+        Nunemaker::Twitter::Cursor.from_response(response, collection_name.to_sym, klass, self, method_name, options)
       end
 
       def handle_forbidden_error(klass, error)
@@ -148,7 +148,7 @@ module Twitter
       # Take a user and merge it into the hash with the correct key
       #
       # @param hash [Hash]
-      # @param user [Integer, String, Twitter::User] A Twitter user ID, screen name, URI, or object.
+      # @param user [Integer, String, Nunemaker::Twitter::User] A Nunemaker::Twitter user ID, screen name, URI, or object.
       # @return [Hash]
       def merge_user(hash, user, prefix=nil)
         merge_user!(hash.dup, user, prefix)
@@ -157,7 +157,7 @@ module Twitter
       # Take a user and merge it into the hash with the correct key
       #
       # @param hash [Hash]
-      # @param user [Integer, String, URI, Twitter::User] A Twitter user ID, screen name, URI, or object.
+      # @param user [Integer, String, URI, Nunemaker::Twitter::User] A Nunemaker::Twitter user ID, screen name, URI, or object.
       # @return [Hash]
       def merge_user!(hash, user, prefix=nil)
         case user
@@ -171,7 +171,7 @@ module Twitter
           end
         when URI
           hash[[prefix, "screen_name"].compact.join("_").to_sym] = user.path.split("/").last
-        when Twitter::User
+        when Nunemaker::Twitter::User
           hash[[prefix, "user_id"].compact.join("_").to_sym] = user.id
         end
         hash
@@ -180,7 +180,7 @@ module Twitter
       # Take a multiple users and merge them into the hash with the correct keys
       #
       # @param hash [Hash]
-      # @param users [Enumerable<Integer, String, Twitter::User>] A collection of Twitter user IDs, screen_names, or objects.
+      # @param users [Enumerable<Integer, String, Nunemaker::Twitter::User>] A collection of Nunemaker::Twitter user IDs, screen_names, or objects.
       # @return [Hash]
       def merge_users(hash, users)
         merge_users!(hash.dup, users)
@@ -189,7 +189,7 @@ module Twitter
       # Take a multiple users and merge them into the hash with the correct keys
       #
       # @param hash [Hash]
-      # @param users [Enumerable<Integer, String, URI, Twitter::User>] A collection of Twitter user IDs, screen_names, URIs, or objects.
+      # @param users [Enumerable<Integer, String, URI, Nunemaker::Twitter::User>] A collection of Nunemaker::Twitter user IDs, screen_names, URIs, or objects.
       # @return [Hash]
       def merge_users!(hash, users)
         user_ids, screen_names = [], []
@@ -205,7 +205,7 @@ module Twitter
             end
           when URI
             screen_names << user.path.split("/").last
-          when Twitter::User
+          when Nunemaker::Twitter::User
             user_ids << user.id
           end
         end

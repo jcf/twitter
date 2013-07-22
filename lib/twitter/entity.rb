@@ -1,7 +1,7 @@
 require 'twitter/base'
 
-module Twitter
-  class Entity < Twitter::Base
+module Nunemaker::Twitter
+  class Entity < Nunemaker::Twitter::Base
     attr_reader :indices
   end
 end

@@ -1,30 +1,30 @@
 require 'twitter/base'
 
-module Twitter
-  class Relationship < Twitter::Base
+module Nunemaker::Twitter
+  class Relationship < Nunemaker::Twitter::Base
 
     # Initializes a new object
     #
     # @param attrs [Hash]
-    # @return [Twitter::Relationship]
+    # @return [Nunemaker::Twitter::Relationship]
     def initialize(attrs={})
       @attrs = attrs[:relationship]
     end
 
-    # @return [Twitter::SourceUser]
+    # @return [Nunemaker::Twitter::SourceUser]
     def source
-      @source ||= new_or_null_object(Twitter::SourceUser, :source)
+      @source ||= new_or_null_object(Nunemaker::Twitter::SourceUser, :source)
     end
 
-    # @return [Twitter::TargetUser]
+    # @return [Nunemaker::Twitter::TargetUser]
     def target
-      @target ||= new_or_null_object(Twitter::TargetUser, :target)
+      @target ||= new_or_null_object(Nunemaker::Twitter::TargetUser, :target)
     end
 
     # Update the attributes of a Relationship
     #
     # @param attrs [Hash]
-    # @return [Twitter::Relationship]
+    # @return [Nunemaker::Twitter::Relationship]
     def update(attrs)
       @attrs.update(attrs[:relationship]) unless attrs[:relationship].nil?
       self

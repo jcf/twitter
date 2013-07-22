@@ -1,9 +1,9 @@
 require 'twitter/creatable'
 require 'twitter/identity'
 
-module Twitter
-  class SavedSearch < Twitter::Identity
-    include Twitter::Creatable
+module Nunemaker::Twitter
+  class SavedSearch < Nunemaker::Twitter::Identity
+    include Nunemaker::Twitter::Creatable
     attr_reader :name, :position, :query
   end
 end

@@ -23,37 +23,37 @@ require 'simple_oauth'
 require 'base64'
 require 'uri'
 
-module Twitter
-  # Wrapper for the Twitter REST API
+module Nunemaker::Twitter
+  # Wrapper for the Nunemaker::Twitter REST API
   #
-  # @note All methods have been separated into modules and follow the same grouping used in {http://dev.twitter.com/doc the Twitter API Documentation}.
+  # @note All methods have been separated into modules and follow the same grouping used in {http://dev.twitter.com/doc the Nunemaker::Twitter API Documentation}.
   # @see http://dev.twitter.com/pages/every_developer
   class Client
-    include Twitter::API::DirectMessages
-    include Twitter::API::Favorites
-    include Twitter::API::FriendsAndFollowers
-    include Twitter::API::Help
-    include Twitter::API::Lists
-    include Twitter::API::OAuth
-    include Twitter::API::PlacesAndGeo
-    include Twitter::API::SavedSearches
-    include Twitter::API::Search
-    include Twitter::API::SpamReporting
-    include Twitter::API::SuggestedUsers
-    include Twitter::API::Timelines
-    include Twitter::API::Trends
-    include Twitter::API::Tweets
-    include Twitter::API::Undocumented
-    include Twitter::API::Users
-    include Twitter::Configurable
+    include Nunemaker::Twitter::API::DirectMessages
+    include Nunemaker::Twitter::API::Favorites
+    include Nunemaker::Twitter::API::FriendsAndFollowers
+    include Nunemaker::Twitter::API::Help
+    include Nunemaker::Twitter::API::Lists
+    include Nunemaker::Twitter::API::OAuth
+    include Nunemaker::Twitter::API::PlacesAndGeo
+    include Nunemaker::Twitter::API::SavedSearches
+    include Nunemaker::Twitter::API::Search
+    include Nunemaker::Twitter::API::SpamReporting
+    include Nunemaker::Twitter::API::SuggestedUsers
+    include Nunemaker::Twitter::API::Timelines
+    include Nunemaker::Twitter::API::Trends
+    include Nunemaker::Twitter::API::Tweets
+    include Nunemaker::Twitter::API::Undocumented
+    include Nunemaker::Twitter::API::Users
+    include Nunemaker::Twitter::Configurable
 
     # Initializes a new Client object
     #
     # @param options [Hash]
-    # @return [Twitter::Client]
+    # @return [Nunemaker::Twitter::Client]
     def initialize(options={})
-      Twitter::Configurable.keys.each do |key|
-        instance_variable_set(:"@#{key}", options[key] || Twitter.instance_variable_get(:"@#{key}"))
+      Nunemaker::Twitter::Configurable.keys.each do |key|
+        instance_variable_set(:"@#{key}", options[key] || Nunemaker::Twitter.instance_variable_get(:"@#{key}"))
       end
     end
 
@@ -95,7 +95,7 @@ module Twitter
         elsif params.delete(:app_auth) || !user_token?
           unless bearer_token?
             @bearer_token = token
-            Twitter.client.bearer_token = @bearer_token if Twitter.client?
+            Nunemaker::Twitter.client.bearer_token = @bearer_token if Nunemaker::Twitter.client?
           end
           request.headers[:authorization] = bearer_auth_header
         else
@@ -108,9 +108,9 @@ module Twitter
       request_setup = request_setup(method, path, params, signature_params)
       connection.send(method.to_sym, path, params, &request_setup).env
     rescue Faraday::Error::ClientError
-      raise Twitter::Error::ClientError
+      raise Nunemaker::Twitter::Error::ClientError
     rescue JSON::ParserError
-      raise Twitter::Error::ParserError
+      raise Nunemaker::Twitter::Error::ParserError
     end
 
     # Returns a Faraday::Connection object
@@ -129,7 +129,7 @@ module Twitter
     end
 
     def bearer_auth_header
-      if @bearer_token.is_a?(Twitter::Token) && @bearer_token.token_type == "bearer"
+      if @bearer_token.is_a?(Nunemaker::Twitter::Token) && @bearer_token.token_type == "bearer"
         "Bearer #{@bearer_token.access_token}"
       else
         "Bearer #{@bearer_token}"

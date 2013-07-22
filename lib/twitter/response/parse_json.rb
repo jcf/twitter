@@ -1,7 +1,7 @@
 require 'faraday'
 require 'json'
 
-module Twitter
+module Nunemaker::Twitter
   module Response
     class ParseJson < Faraday::Response::Middleware
 

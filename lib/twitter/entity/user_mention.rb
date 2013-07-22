@@ -1,8 +1,8 @@
 require 'twitter/entity'
 
-module Twitter
+module Nunemaker::Twitter
   class Entity
-    class UserMention < Twitter::Entity
+    class UserMention < Nunemaker::Twitter::Entity
       attr_reader :id, :name, :screen_name
     end
   end

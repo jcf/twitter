@@ -1,8 +1,8 @@
 require 'twitter/entity'
 
-module Twitter
+module Nunemaker::Twitter
   class Entity
-    class Symbol < Twitter::Entity
+    class Symbol < Nunemaker::Twitter::Entity
       attr_reader :text
     end
   end

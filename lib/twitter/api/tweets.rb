@@ -5,27 +5,27 @@ require 'twitter/error/forbidden'
 require 'twitter/oembed'
 require 'twitter/tweet'
 
-module Twitter
+module Nunemaker::Twitter
   module API
     module Tweets
-      include Twitter::API::Utils
+      include Nunemaker::Twitter::API::Utils
 
       # Returns up to 100 of the first retweets of a given tweet
       #
       # @see https://dev.twitter.com/docs/api/1.1/get/statuses/retweets/:id
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Array<Twitter::Tweet>]
-      # @param tweet [Integer, String, URI, Twitter::Tweet] A Tweet ID, URI, or object.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Array<Nunemaker::Twitter::Tweet>]
+      # @param tweet [Integer, String, URI, Nunemaker::Twitter::Tweet] A Tweet ID, URI, or object.
       # @param options [Hash] A customizable set of options.
       # @option options [Integer] :count Specifies the number of records to retrieve. Must be less than or equal to 100.
       # @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       # @example Return up to 100 of the first retweets of the Tweet with the ID 28561922516
-      #   Twitter.retweets(28561922516)
+      #   Nunemaker::Twitter.retweets(28561922516)
       def retweets(tweet, options={})
         id = extract_id(tweet)
-        objects_from_response(Twitter::Tweet, :get, "/1.1/statuses/retweets/#{id}.json", options)
+        objects_from_response(Nunemaker::Twitter::Tweet, :get, "/1.1/statuses/retweets/#{id}.json", options)
       end
 
       # Show up to 100 users who retweeted the Tweet
@@ -33,15 +33,15 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/get/statuses/retweets/:id
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
       # @return [Array]
-      # @param tweet [Integer, String, URI, Twitter::Tweet] A Tweet ID, URI, or object.
+      # @param tweet [Integer, String, URI, Nunemaker::Twitter::Tweet] A Tweet ID, URI, or object.
       # @param options [Hash] A customizable set of options.
       # @option options [Integer] :count Specifies the number of records to retrieve. Must be less than or equal to 100.
       # @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       # @option options [Boolean] :ids_only ('false') Only return user ids instead of full user objects.
       # @example Show up to 100 users who retweeted the Tweet with the ID 28561922516
-      #   Twitter.retweeters_of(28561922516)
+      #   Nunemaker::Twitter.retweeters_of(28561922516)
       def retweeters_of(tweet, options={})
         ids_only = !!options.delete(:ids_only)
         retweeters = retweets(tweet, options).map(&:user)
@@ -57,17 +57,17 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/get/statuses/show/:id
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @raise [Twitter::Error::Forbidden] Error raised when supplied status is over 140 characters.
-      # @return [Twitter::Tweet] The requested Tweet.
-      # @param tweet [Integer, String, URI, Twitter::Tweet] A Tweet ID, URI, or object.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @raise [Nunemaker::Twitter::Error::Forbidden] Error raised when supplied status is over 140 characters.
+      # @return [Nunemaker::Twitter::Tweet] The requested Tweet.
+      # @param tweet [Integer, String, URI, Nunemaker::Twitter::Tweet] A Tweet ID, URI, or object.
       # @param options [Hash] A customizable set of options.
       # @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       # @example Return the Tweet with the ID 25938088801
-      #   Twitter.status(25938088801)
+      #   Nunemaker::Twitter.status(25938088801)
       def status(tweet, options={})
         id = extract_id(tweet)
-        object_from_response(Twitter::Tweet, :get, "/1.1/statuses/show/#{id}.json", options)
+        object_from_response(Nunemaker::Twitter::Tweet, :get, "/1.1/statuses/show/#{id}.json", options)
       end
 
       # Returns Tweets
@@ -75,14 +75,14 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/get/statuses/show/:id
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Array<Twitter::Tweet>] The requested Tweets.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Array<Nunemaker::Twitter::Tweet>] The requested Tweets.
       # @overload statuses(*tweets)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @example Return the Tweet with the ID 25938088801
-      #     Twitter.statuses(25938088801)
+      #     Nunemaker::Twitter.statuses(25938088801)
       # @overload statuses(*tweets, options)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @param options [Hash] A customizable set of options.
       #   @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       def statuses(*args)
@@ -95,14 +95,14 @@ module Twitter
       # @note The authenticating user must be the author of the specified Tweets.
       # @rate_limited No
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Array<Twitter::Tweet>] The deleted Tweets.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Array<Nunemaker::Twitter::Tweet>] The deleted Tweets.
       # @overload status_destroy(*tweets)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @example Destroy the Tweet with the ID 25938088801
-      #     Twitter.status_destroy(25938088801)
+      #     Nunemaker::Twitter.status_destroy(25938088801)
       # @overload status_destroy(*tweets, options)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @param options [Hash] A customizable set of options.
       #   @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       def status_destroy(*args)
@@ -116,20 +116,20 @@ module Twitter
       # @note A status update with text identical to the authenticating user's current status will be ignored to prevent duplicates.
       # @rate_limited No
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Twitter::Tweet] The created Tweet.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Nunemaker::Twitter::Tweet] The created Tweet.
       # @param status [String] The text of your status update, up to 140 characters.
       # @param options [Hash] A customizable set of options.
       # @option options [Integer] :in_reply_to_status_id The ID of an existing status that the update is in reply to.
       # @option options [Float] :lat The latitude of the location this tweet refers to. This option will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding :long option.
       # @option options [Float] :long The longitude of the location this tweet refers to. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This option will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding :lat option.
-      # @option options [String] :place_id A place in the world. These IDs can be retrieved from {Twitter::API::PlacesAndGeo#reverse_geocode}.
+      # @option options [String] :place_id A place in the world. These IDs can be retrieved from {Nunemaker::Twitter::API::PlacesAndGeo#reverse_geocode}.
       # @option options [String] :display_coordinates Whether or not to put a pin on the exact coordinates a tweet has been sent from.
       # @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       # @example Update the authenticating user's status
-      #   Twitter.update("I'm tweeting with @gem!")
+      #   Nunemaker::Twitter.update("I'm tweeting with @gem!")
       def update(status, options={})
-        object_from_response(Twitter::Tweet, :post, "/1.1/statuses/update.json", options.merge(:status => status))
+        object_from_response(Nunemaker::Twitter::Tweet, :post, "/1.1/statuses/update.json", options.merge(:status => status))
       end
 
       # Retweets the specified Tweets as the authenticating user
@@ -137,24 +137,24 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/post/statuses/retweet/:id
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Array<Twitter::Tweet>] The original tweets with retweet details embedded.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Array<Nunemaker::Twitter::Tweet>] The original tweets with retweet details embedded.
       # @overload retweet(*tweets)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @example Retweet the Tweet with the ID 28561922516
-      #     Twitter.retweet(28561922516)
+      #     Nunemaker::Twitter.retweet(28561922516)
       # @overload retweet(*tweets, options)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @param options [Hash] A customizable set of options.
       #   @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       def retweet(*args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         arguments.flatten.threaded_map do |tweet|
           id = extract_id(tweet)
           begin
             post_retweet(id, arguments.options)
-          rescue Twitter::Error::Forbidden => error
-            raise unless error.message == Twitter::Error::AlreadyRetweeted::MESSAGE
+          rescue Nunemaker::Twitter::Error::Forbidden => error
+            raise unless error.message == Nunemaker::Twitter::Error::AlreadyRetweeted::MESSAGE
           end
         end.compact
       end
@@ -164,25 +164,25 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/post/statuses/retweet/:id
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::AlreadyRetweeted] Error raised when tweet has already been retweeted.
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Array<Twitter::Tweet>] The original tweets with retweet details embedded.
+      # @raise [Nunemaker::Twitter::Error::AlreadyRetweeted] Error raised when tweet has already been retweeted.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Array<Nunemaker::Twitter::Tweet>] The original tweets with retweet details embedded.
       # @overload retweet!(*tweets)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @example Retweet the Tweet with the ID 28561922516
-      #     Twitter.retweet!(28561922516)
+      #     Nunemaker::Twitter.retweet!(28561922516)
       # @overload retweet!(*tweets, options)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @param options [Hash] A customizable set of options.
       #   @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       def retweet!(*args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         arguments.flatten.threaded_map do |tweet|
           id = extract_id(tweet)
           begin
             post_retweet(id, arguments.options)
-          rescue Twitter::Error::Forbidden => error
-            handle_forbidden_error(Twitter::Error::AlreadyRetweeted, error)
+          rescue Nunemaker::Twitter::Error::Forbidden => error
+            handle_forbidden_error(Nunemaker::Twitter::Error::AlreadyRetweeted, error)
           end
         end.compact
       end
@@ -193,21 +193,21 @@ module Twitter
       # @note A status update with text/media identical to the authenticating user's current status will NOT be ignored
       # @rate_limited No
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Twitter::Tweet] The created Tweet.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Nunemaker::Twitter::Tweet] The created Tweet.
       # @param status [String] The text of your status update, up to 140 characters.
       # @param media [File, Hash] A File object with your picture (PNG, JPEG or GIF)
       # @param options [Hash] A customizable set of options.
       # @option options [Integer] :in_reply_to_status_id The ID of an existing Tweet that the update is in reply to.
       # @option options [Float] :lat The latitude of the location this tweet refers to. This option will be ignored unless it is inside the range -90.0 to +90.0 (North is positive) inclusive. It will also be ignored if there isn't a corresponding :long option.
       # @option options [Float] :long The longitude of the location this tweet refers to. The valid ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This option will be ignored if outside that range, if it is not a number, if geo_enabled is disabled, or if there not a corresponding :lat option.
-      # @option options [String] :place_id A place in the world. These IDs can be retrieved from {Twitter::API::PlacesAndGeo#reverse_geocode}.
+      # @option options [String] :place_id A place in the world. These IDs can be retrieved from {Nunemaker::Twitter::API::PlacesAndGeo#reverse_geocode}.
       # @option options [String] :display_coordinates Whether or not to put a pin on the exact coordinates a tweet has been sent from.
       # @option options [Boolean, String, Integer] :trim_user Each tweet returned in a timeline will include a user object with only the author's numerical ID when set to true, 't' or 1.
       # @example Update the authenticating user's status
-      #   Twitter.update_with_media("I'm tweeting with @gem!", File.new('my_awesome_pic.jpeg'))
+      #   Nunemaker::Twitter.update_with_media("I'm tweeting with @gem!", File.new('my_awesome_pic.jpeg'))
       def update_with_media(status, media, options={})
-        object_from_response(Twitter::Tweet, :post, "/1.1/statuses/update_with_media.json", options.merge('media[]' => media, 'status' => status))
+        object_from_response(Nunemaker::Twitter::Tweet, :post, "/1.1/statuses/update_with_media.json", options.merge('media[]' => media, 'status' => status))
       end
 
       # Returns oEmbed for a Tweet
@@ -215,9 +215,9 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/get/statuses/oembed
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Twitter::OEmbed] OEmbed for the requested Tweet.
-      # @param tweet [Integer, String, URI, Twitter::Tweet] A Tweet ID, URI, or object.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Nunemaker::Twitter::OEmbed] OEmbed for the requested Tweet.
+      # @param tweet [Integer, String, URI, Nunemaker::Twitter::Tweet] A Tweet ID, URI, or object.
       # @param options [Hash] A customizable set of options.
       # @option options [Integer] :maxwidth The maximum width in pixels that the embed should be rendered at. This value is constrained to be between 250 and 550 pixels.
       # @option options [Boolean, String, Integer] :hide_media Specifies whether the embedded Tweet should automatically expand images which were uploaded via {https://dev.twitter.com/docs/api/1.1/post/statuses/update_with_media POST statuses/update_with_media}. When set to either true, t or 1 images will not be expanded. Defaults to false.
@@ -227,10 +227,10 @@ module Twitter
       # @option options [String] :related A value for the TWT related parameter, as described in {https://dev.twitter.com/docs/intents Web Intents}. This value will be forwarded to all Web Intents calls.
       # @option options [String] :lang Language code for the rendered embed. This will affect the text and localization of the rendered HTML.
       # @example Return oEmbeds for Tweet with the ID 25938088801
-      #   Twitter.status_with_activity(25938088801)
+      #   Nunemaker::Twitter.status_with_activity(25938088801)
       def oembed(tweet, options={})
         options[:id] = extract_id(tweet)
-        object_from_response(Twitter::OEmbed, :get, "/1.1/statuses/oembed.json", options)
+        object_from_response(Nunemaker::Twitter::OEmbed, :get, "/1.1/statuses/oembed.json", options)
       end
 
       # Returns oEmbeds for Tweets
@@ -238,14 +238,14 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/get/statuses/oembed
       # @rate_limited Yes
       # @authentication Requires user context
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
-      # @return [Array<Twitter::OEmbed>] OEmbeds for the requested Tweets.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @return [Array<Nunemaker::Twitter::OEmbed>] OEmbeds for the requested Tweets.
       # @overload oembed(*tweets)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @example Return oEmbeds for Tweets with the ID 25938088801
-      #     Twitter.status_with_activity(25938088801)
+      #     Nunemaker::Twitter.status_with_activity(25938088801)
       # @overload oembed(*tweets, options)
-      #   @param tweets [Enumerable<Integer, String, URI, Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
+      #   @param tweets [Enumerable<Integer, String, URI, Nunemaker::Twitter::Tweet>] A collection of Tweet IDs, URIs, or objects.
       #   @param options [Hash] A customizable set of options.
       #   @option options [Integer] :maxwidth The maximum width in pixels that the embed should be rendered at. This value is constrained to be between 250 and 550 pixels.
       #   @option options [Boolean, String, Integer] :hide_media Specifies whether the embedded Tweet should automatically expand images which were uploaded via {https://dev.twitter.com/docs/api/1.1/post/statuses/update_with_media POST statuses/update_with_media}. When set to either true, t or 1 images will not be expanded. Defaults to false.
@@ -255,7 +255,7 @@ module Twitter
       #   @option options [String] :related A value for the TWT related parameter, as described in {https://dev.twitter.com/docs/intents Web Intents}. This value will be forwarded to all Web Intents calls.
       #   @option options [String] :lang Language code for the rendered embed. This will affect the text and localization of the rendered HTML.
       def oembeds(*args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         arguments.flatten.threaded_map do |tweet|
           id = extract_id(tweet)
           oembed(id, arguments.options)
@@ -267,19 +267,19 @@ module Twitter
       # @see https://dev.twitter.com/docs/api/1.1/get/statuses/retweeters/ids
       # @rate_limited Yes
       # @authentication Required
-      # @raise [Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @raise [Nunemaker::Twitter::Error::Unauthorized] Error raised when supplied user credentials are not valid.
       # @return [Array<Integer>]
       # @overload retweeters_ids(options)
       #   @param options [Hash] A customizable set of options.
       #   @example Return a collection of up to 100 user IDs belonging to users who have retweeted the tweet specified by the id parameter
-      #     Twitter.retweeters_ids({:id => 25938088801})
+      #     Nunemaker::Twitter.retweeters_ids({:id => 25938088801})
       # @overload retweeters_ids(id, options={})
-      #   @param tweet [Integer, String, URI, Twitter::Tweet] A Tweet ID, URI, or object.
+      #   @param tweet [Integer, String, URI, Nunemaker::Twitter::Tweet] A Tweet ID, URI, or object.
       #   @param options [Hash] A customizable set of options.
       #   @example Return a collection of up to 100 user IDs belonging to users who have retweeted the tweet specified by the id parameter
-      #     Twitter.retweeters_ids(25938088801)
+      #     Nunemaker::Twitter.retweeters_ids(25938088801)
       def retweeters_ids(*args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         arguments.options[:id] ||= extract_id(arguments.first)
         cursor_from_response(:ids, nil, :get, "/1.1/statuses/retweeters/ids.json", arguments.options, :retweeters_ids)
       end
@@ -289,12 +289,12 @@ module Twitter
       # @param request_method [Symbol]
       # @param path [String]
       # @param args [Array]
-      # @return [Array<Twitter::Tweet>]
+      # @return [Array<Nunemaker::Twitter::Tweet>]
       def threaded_tweets_from_response(request_method, path, args)
-        arguments = Twitter::API::Arguments.new(args)
+        arguments = Nunemaker::Twitter::API::Arguments.new(args)
         arguments.flatten.threaded_map do |tweet|
           id = extract_id(tweet)
-          object_from_response(Twitter::Tweet, request_method, path + "/#{id}.json", arguments.options)
+          object_from_response(Nunemaker::Twitter::Tweet, request_method, path + "/#{id}.json", arguments.options)
         end
       end
 
@@ -304,7 +304,7 @@ module Twitter
         retweeted_status = response.dup
         retweeted_status[:body] = response[:body].delete(:retweeted_status)
         retweeted_status[:body][:retweeted_status] = response[:body]
-        Twitter::Tweet.from_response(retweeted_status)
+        Nunemaker::Twitter::Tweet.from_response(retweeted_status)
       end
 
     end

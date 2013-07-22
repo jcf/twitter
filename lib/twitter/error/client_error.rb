@@ -1,14 +1,14 @@
 require 'twitter/error'
 
-module Twitter
+module Nunemaker::Twitter
   class Error
-    # Raised when Twitter returns a 4xx HTTP status code or there's an error in Faraday
-    class ClientError < Twitter::Error
+    # Raised when Nunemaker::Twitter returns a 4xx HTTP status code or there's an error in Faraday
+    class ClientError < Nunemaker::Twitter::Error
 
       # Create a new error from an HTTP environment
       #
       # @param response [Hash]
-      # @return [Twitter::Error]
+      # @return [Nunemaker::Twitter::Error]
       def self.from_response(response={})
         new(parse_error(response[:body]), response[:response_headers])
       end

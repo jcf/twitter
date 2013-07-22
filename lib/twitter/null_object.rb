@@ -1,4 +1,4 @@
-module Twitter
+module Nunemaker::Twitter
   class NullObject
 
     def method_missing(*args, &block)

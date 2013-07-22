@@ -1,7 +1,7 @@
 require 'twitter/identity'
 
-module Twitter
-  class BasicUser < Twitter::Identity
+module Nunemaker::Twitter
+  class BasicUser < Nunemaker::Twitter::Identity
     attr_reader :following, :screen_name
     alias handle screen_name
     alias username screen_name

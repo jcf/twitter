@@ -1,16 +1,16 @@
 require 'twitter/base'
 require 'twitter/creatable'
 
-module Twitter
+module Nunemaker::Twitter
   module Action
-    class Tweet < Twitter::Base
-      include Twitter::Creatable
+    class Tweet < Nunemaker::Twitter::Base
+      include Nunemaker::Twitter::Creatable
       attr_reader :max_position, :min_position
 
-      # @return [Array<Twitter::User>]
+      # @return [Array<Nunemaker::Twitter::User>]
       def sources
         @sources = Array(@attrs[:sources]).map do |user|
-          Twitter::User.new(user)
+          Nunemaker::Twitter::User.new(user)
         end
       end
 

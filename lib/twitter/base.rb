@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'twitter/null_object'
 
-module Twitter
+module Nunemaker::Twitter
   class Base
     extend Forwardable
     attr_reader :attrs
@@ -31,7 +31,7 @@ module Twitter
     # Construct an object from the response hash
     #
     # @param response [Hash]
-    # @return [Twitter::Base]
+    # @return [Nunemaker::Twitter::Base]
     def self.from_response(response={})
       new(response[:body])
     end
@@ -39,7 +39,7 @@ module Twitter
     # Initializes a new object
     #
     # @param attrs [Hash]
-    # @return [Twitter::Base]
+    # @return [Nunemaker::Twitter::Base]
     def initialize(attrs={})
       @attrs = attrs || {}
     end
@@ -64,7 +64,7 @@ module Twitter
         value = attrs.delete(key1)
         klass.new(value.update(key2 => attrs))
       else
-        Twitter::NullObject.new
+        Nunemaker::Twitter::NullObject.new
       end
     end
 
@@ -76,20 +76,20 @@ module Twitter
       if @attrs[key]
         klass.new(@attrs[key])
       else
-        Twitter::NullObject.new
+        Nunemaker::Twitter::NullObject.new
       end
     end
 
   private
 
     # @param attr [Symbol]
-    # @param other [Twitter::Base]
+    # @param other [Nunemaker::Twitter::Base]
     # @return [Boolean]
     def attr_equal(attr, other)
       self.class == other.class && !other.send(attr).nil? && send(attr) == other.send(attr)
     end
 
-    # @param other [Twitter::Base]
+    # @param other [Nunemaker::Twitter::Base]
     # @return [Boolean]
     def attrs_equal(other)
       self.class == other.class && !other.attrs.empty? && attrs == other.attrs

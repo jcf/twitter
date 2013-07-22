@@ -1,9 +1,9 @@
 require 'twitter/error/client_error'
 
-module Twitter
+module Nunemaker::Twitter
   class Error
-    # Raised when Twitter returns the HTTP status code 400
-    class BadRequest < Twitter::Error::ClientError
+    # Raised when Nunemaker::Twitter returns the HTTP status code 400
+    class BadRequest < Nunemaker::Twitter::Error::ClientError
       HTTP_STATUS_CODE = 400
     end
   end

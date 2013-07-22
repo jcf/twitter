@@ -1,10 +1,10 @@
 require 'twitter/base'
 
-module Twitter
-  class Trend < Twitter::Base
+module Nunemaker::Twitter
+  class Trend < Nunemaker::Twitter::Base
     attr_reader :events, :name, :promoted_content, :query, :url
 
-    # @param other [Twitter::Trend]
+    # @param other [Nunemaker::Twitter::Trend]
     # @return [Boolean]
     def ==(other)
       super || attr_equal(:name, other) || attrs_equal(other)

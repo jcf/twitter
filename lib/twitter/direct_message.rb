@@ -1,20 +1,20 @@
 require 'twitter/creatable'
 require 'twitter/identity'
 
-module Twitter
-  class DirectMessage < Twitter::Identity
-    include Twitter::Creatable
+module Nunemaker::Twitter
+  class DirectMessage < Nunemaker::Twitter::Identity
+    include Nunemaker::Twitter::Creatable
     attr_reader :text
     alias full_text text
 
-    # @return [Twitter::User]
+    # @return [Nunemaker::Twitter::User]
     def recipient
-      @recipient ||= new_or_null_object(Twitter::User, :recipient)
+      @recipient ||= new_or_null_object(Nunemaker::Twitter::User, :recipient)
     end
 
-    # @return [Twitter::User]
+    # @return [Nunemaker::Twitter::User]
     def sender
-      @sender ||= new_or_null_object(Twitter::User, :sender)
+      @sender ||= new_or_null_object(Nunemaker::Twitter::User, :sender)
     end
 
   end
